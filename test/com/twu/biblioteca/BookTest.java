@@ -37,4 +37,11 @@ public class BookTest {
         book.checkOut();
         assertEquals(true, book.isCheckedOut);
     }
+
+    @Test
+    public void returnBook() throws Exception {
+        book.checkOut();
+        book.returnBook();
+        assertEquals(false, book.isCheckedOut);
+    }
 }

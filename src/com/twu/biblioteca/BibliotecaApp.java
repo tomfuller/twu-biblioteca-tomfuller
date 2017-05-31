@@ -7,7 +7,7 @@ public class BibliotecaApp {
     private Book testDrivenDevelopment = new Book("Test Driven Development", "Kent Beck", 2003);
     private Book headFirstJava = new Book("Head First Java", "Kathy Sierra", 2005);
     Book[] bookArray = {butteredParsnips, testDrivenDevelopment, headFirstJava};
-    String[] menuOptions = {"1. List books", "2. Quit", "3. Checkout Book"};
+    String[] menuOptions = {"1. List books", "2. Quit", "3. Checkout Book", "4. Return Book"};
 
 
     public static void main(String[] args) {
@@ -65,6 +65,10 @@ public class BibliotecaApp {
         else if(choice == 3) {
             checkoutBook();
         }
+
+        else if(choice == 4) {
+            returnBook();
+        }
         else {
             System.out.println("Select a valid option!");
         }
@@ -74,6 +78,11 @@ public class BibliotecaApp {
     public void checkoutBook() {
         String bookName = getBookNameFromUser();
         changeBookCheckoutStatus(bookName);
+    }
+
+    public void returnBook() {
+        String bookName = getBookNameFromUser();
+        changeBookReturnStatus(bookName);
     }
 
     public void changeBookCheckoutStatus(String bookName) {
@@ -94,7 +103,6 @@ public class BibliotecaApp {
         String message = "Thank you! Enjoy the book";
         System.out.println(message);
         return message;
-
     }
 
     public String printUnsuccessfulCheckoutMessage() {
@@ -109,4 +117,29 @@ public class BibliotecaApp {
         return reader.nextLine();
     }
 
+    public void changeBookReturnStatus(String bookName) {
+        boolean isBookInList = false;
+        for (Book book: bookArray) {
+            if (bookName.equals(book.getTitle())  ) {
+                isBookInList = true;
+                printSuccessfulReturnMessage();
+                book.returnBook();
+            }
+        }
+        if (isBookInList == false) {
+            printUnsuccessfulReturnMessage();
+        }
+    }
+
+    public String printUnsuccessfulReturnMessage() {
+        String message = "That is not a valid book to return.";
+        System.out.println(message);
+        return message;
+    }
+
+    public String printSuccessfulReturnMessage() {
+        String message = "Thank you for returning the book.";
+        System.out.println(message);
+        return message;
+    }
 }

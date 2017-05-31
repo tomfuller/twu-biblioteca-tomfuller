@@ -52,4 +52,26 @@ public class BibliotecaAppTest {
     public void unsuccessfulBookCheckoutMessage() throws Exception {
         assertEquals("That book is not available", app.printUnsuccessfulCheckoutMessage());
     }
+
+    @Test
+    public void menuShowsReturnBook() throws Exception {
+        assertEquals("4. Return Book", app.menuOptions[3]);
+    }
+
+    @Test
+    public void returnedBookAppearsInList() throws Exception {
+        app.changeBookCheckoutStatus("Buttered Parsnips");
+        app.changeBookReturnStatus("Buttered Parsnips");
+        assertEquals("Buttered Parsnips, Joe Lycett, 2016\nTest Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printBookList());
+    }
+
+    @Test
+    public void successfulBookReturnMessage() throws Exception {
+        assertEquals("Thank you for returning the book.", app.printSuccessfulReturnMessage());
+    }
+
+    @Test
+    public void unsuccessfulBookReturnMessage() throws Exception {
+        assertEquals("That is not a valid book to return.", app.printUnsuccessfulReturnMessage());
+    }
 }
