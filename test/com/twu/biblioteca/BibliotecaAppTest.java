@@ -44,16 +44,6 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void successfulBookCheckoutMessage() throws Exception {
-        assertEquals("Thank you! Enjoy the book", app.printSuccessfulCheckoutMessage());
-    }
-
-    @Test
-    public void unsuccessfulBookCheckoutMessage() throws Exception {
-        assertEquals("That book is not available", app.printUnsuccessfulCheckoutMessage());
-    }
-
-    @Test
     public void menuShowsReturnBook() throws Exception {
         assertEquals("4. Return Book", app.menuOptions[3]);
     }
@@ -66,12 +56,22 @@ public class BibliotecaAppTest {
     }
 
     @Test
+    public void successfulBookCheckoutMessage() throws Exception {
+        assertEquals("Thank you! Enjoy the book", app.printMessage(true, "checkout"));
+    }
+
+    @Test
+    public void unsuccessfulBookCheckoutMessage() throws Exception {
+        assertEquals("That book is not available", app.printMessage(false, "checkout"));
+    }
+
+    @Test
     public void successfulBookReturnMessage() throws Exception {
-        assertEquals("Thank you for returning the book.", app.printSuccessfulReturnMessage());
+        assertEquals("Thank you for returning the book.", app.printMessage(true, "return"));
     }
 
     @Test
     public void unsuccessfulBookReturnMessage() throws Exception {
-        assertEquals("That is not a valid book to return.", app.printUnsuccessfulReturnMessage());
+        assertEquals("That is not a valid book to return.", app.printMessage(false, "return"));
     }
 }

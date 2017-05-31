@@ -90,26 +90,35 @@ public class BibliotecaApp {
         for (Book book: bookArray) {
             if (bookName.equals(book.getTitle())  ) {
                 isBookInList = true;
-                printSuccessfulCheckoutMessage();
                 book.checkOut();
             }
         }
-        if (isBookInList == false) {
-            printUnsuccessfulCheckoutMessage();
+        String messageAction = "checkout";
+        printMessage(isBookInList, messageAction);
+    }
+
+    public String printMessage(boolean isSuccessful, String messageAction) {
+        String message = "";
+        if (messageAction.equals("checkout")) {
+            if (isSuccessful) {
+                message = "Thank you! Enjoy the book";
+            }
+            else {
+                message = "That book is not available";
+            }
         }
-    }
-
-    public String printSuccessfulCheckoutMessage() {
-        String message = "Thank you! Enjoy the book";
+        if (messageAction.equals("return")) {
+            if (isSuccessful) {
+                message = "Thank you for returning the book.";
+            }
+            else {
+                message = "That is not a valid book to return.";
+            }
+        }
         System.out.println(message);
         return message;
     }
 
-    public String printUnsuccessfulCheckoutMessage() {
-        String message = "That book is not available";
-        System.out.println(message);
-        return message;
-    }
 
     public String getBookNameFromUser() {
         Scanner reader = new Scanner(System.in);
@@ -122,24 +131,10 @@ public class BibliotecaApp {
         for (Book book: bookArray) {
             if (bookName.equals(book.getTitle())  ) {
                 isBookInList = true;
-                printSuccessfulReturnMessage();
                 book.returnBook();
             }
         }
-        if (isBookInList == false) {
-            printUnsuccessfulReturnMessage();
-        }
-    }
-
-    public String printUnsuccessfulReturnMessage() {
-        String message = "That is not a valid book to return.";
-        System.out.println(message);
-        return message;
-    }
-
-    public String printSuccessfulReturnMessage() {
-        String message = "Thank you for returning the book.";
-        System.out.println(message);
-        return message;
+        String messageAction = "return";
+        printMessage(isBookInList, messageAction);
     }
 }
