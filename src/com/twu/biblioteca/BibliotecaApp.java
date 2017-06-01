@@ -56,6 +56,7 @@ public class BibliotecaApp {
     }
 
     public void showMenuChoice(int choice) {
+        String messageAction = "";
         if(choice == 1) {
             printBookList();
         }
@@ -63,11 +64,12 @@ public class BibliotecaApp {
             return;
         }
         else if(choice == 3) {
-            checkoutBook();
+            messageAction = "checkout";
+            actOnBook(messageAction);
         }
-
         else if(choice == 4) {
-            returnBook();
+            messageAction = "return";
+            actOnBook(messageAction);
         }
         else {
             System.out.println("Select a valid option!");
@@ -75,27 +77,29 @@ public class BibliotecaApp {
         Menu();
     }
 
-    public void checkoutBook() {
+    public void actOnBook(String action) {
         String bookName = getBookNameFromUser();
-        changeBookCheckoutStatus(bookName);
+        changeBookStatus(bookName, action);
     }
 
-    public void returnBook() {
-        String bookName = getBookNameFromUser();
-        changeBookReturnStatus(bookName);
-    }
 
-    public void changeBookCheckoutStatus(String bookName) {
+
+    public void changeBookStatus(String bookName, String action) {
         boolean isBookInList = false;
         for (Book book: bookArray) {
             if (bookName.equals(book.getTitle())  ) {
                 isBookInList = true;
-                book.checkOut();
+                if (action.equals("checkout")) {
+                    book.checkOut();
+                }
+                else if (action.equals("return")) {
+                    book.returnBook();
+                }
             }
         }
-        String messageAction = "checkout";
-        printMessage(isBookInList, messageAction);
+        printMessage(isBookInList, action);
     }
+
 
     public String printMessage(boolean isSuccessful, String messageAction) {
         String message = "";
@@ -124,17 +128,5 @@ public class BibliotecaApp {
         Scanner reader = new Scanner(System.in);
         System.out.println("Enter the book's title: ");
         return reader.nextLine();
-    }
-
-    public void changeBookReturnStatus(String bookName) {
-        boolean isBookInList = false;
-        for (Book book: bookArray) {
-            if (bookName.equals(book.getTitle())  ) {
-                isBookInList = true;
-                book.returnBook();
-            }
-        }
-        String messageAction = "return";
-        printMessage(isBookInList, messageAction);
     }
 }

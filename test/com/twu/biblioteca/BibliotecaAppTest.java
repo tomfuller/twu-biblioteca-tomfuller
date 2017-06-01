@@ -39,7 +39,7 @@ public class BibliotecaAppTest {
 
     @Test
     public void checkedOutBookNoLongerInBookList() throws Exception {
-        app.changeBookCheckoutStatus("Buttered Parsnips");
+        app.changeBookStatus("Buttered Parsnips", "checkout");
         assertEquals("Test Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printBookList());
     }
 
@@ -50,8 +50,8 @@ public class BibliotecaAppTest {
 
     @Test
     public void returnedBookAppearsInList() throws Exception {
-        app.changeBookCheckoutStatus("Buttered Parsnips");
-        app.changeBookReturnStatus("Buttered Parsnips");
+        app.changeBookStatus("Buttered Parsnips", "checkout");
+        app.changeBookStatus("Buttered Parsnips", "return");
         assertEquals("Buttered Parsnips, Joe Lycett, 2016\nTest Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printBookList());
     }
 
