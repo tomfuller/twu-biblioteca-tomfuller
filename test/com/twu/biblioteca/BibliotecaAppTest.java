@@ -18,7 +18,7 @@ public class BibliotecaAppTest {
 
     @Test
     public void bookListPrint() throws Exception {
-        assertEquals("Buttered Parsnips, Joe Lycett, 2016\nTest Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printBookList());
+        assertEquals("Buttered Parsnips, Joe Lycett, 2016\nTest Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printItemList("book"));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class BibliotecaAppTest {
     @Test
     public void checkedOutBookNoLongerInBookList() throws Exception {
         app.changeBookStatus("Buttered Parsnips", "checkout");
-        assertEquals("Test Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printBookList());
+        assertEquals("Test Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printItemList("book"));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class BibliotecaAppTest {
     public void returnedBookAppearsInList() throws Exception {
         app.changeBookStatus("Buttered Parsnips", "checkout");
         app.changeBookStatus("Buttered Parsnips", "return");
-        assertEquals("Buttered Parsnips, Joe Lycett, 2016\nTest Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printBookList());
+        assertEquals("Buttered Parsnips, Joe Lycett, 2016\nTest Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printItemList("book"));
     }
 
     @Test
@@ -73,5 +73,15 @@ public class BibliotecaAppTest {
     @Test
     public void unsuccessfulBookReturnMessage() throws Exception {
         assertEquals("That is not a valid book to return.", app.printMessage(false, "return"));
+    }
+
+    @Test
+    public void movieListPrint() throws Exception {
+        assertEquals("A Knights Tale, 2001, Brian Helgeland, 7\nDr Strange, 2016, Scott Derrickson, 8\n", app.printItemList("movie"));
+    }
+
+    @Test
+    public void menuShowListMovies() throws Exception {
+        assertEquals("5. List Movies", app.menuOptions[4]);
     }
 }

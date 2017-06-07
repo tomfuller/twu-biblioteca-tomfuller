@@ -17,6 +17,10 @@ public class Movie {
         rating = movieRating;
     }
 
+    public Movie(String movieName, int movieYear, String movieDirector) {
+        this(movieName, movieYear, movieDirector, "Unrated");
+    }
+
     public String getName() {
         return name;
     }

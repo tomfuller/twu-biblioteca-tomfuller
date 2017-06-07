@@ -3,11 +3,15 @@ import java.util.*;
 
 public class BibliotecaApp {
 
+
     private Book butteredParsnips = new Book("Buttered Parsnips", "Joe Lycett", 2016);
     private Book testDrivenDevelopment = new Book("Test Driven Development", "Kent Beck", 2003);
     private Book headFirstJava = new Book("Head First Java", "Kathy Sierra", 2005);
     Book[] bookArray = {butteredParsnips, testDrivenDevelopment, headFirstJava};
-    String[] menuOptions = {"1. List books", "2. Quit", "3. Checkout Book", "4. Return Book"};
+    private Movie aKnightsTale = new Movie("A Knights Tale", 2001, "Brian Helgeland", "7");
+    private Movie drStrange = new Movie("Dr Strange", 2016, "Scott Derrickson", "8");
+    Movie[] movieArray = {aKnightsTale, drStrange};
+    String[] menuOptions = {"1. List books", "2. Quit", "3. Checkout Book", "4. Return Book", "5. List Movies"};
 
 
     public static void main(String[] args) {
@@ -22,10 +26,20 @@ public class BibliotecaApp {
         return welcomeMessage;
     }
 
-    public String printBookList() {
-        String bookList = formatBookString();
-        System.out.println(bookList);
-        return bookList;
+    String printItemList(String item) {
+        String itemList = "";
+        if(item.equals("movie")) { itemList = formatMovieString(); }
+        else if(item.equals("book")) {itemList = formatBookString(); }
+        System.out.println(itemList);
+        return itemList;
+    }
+
+    String formatMovieString() {
+        String movieList = "";
+        for (Movie movie: movieArray){
+                movieList += movie.getName() + ", " + movie.getYear() + ", " + movie.getDirector() + ", " + movie.getRating() + "\n";
+        }
+        return movieList;
     }
 
     private String formatBookString() {
@@ -56,20 +70,20 @@ public class BibliotecaApp {
     }
 
     public void showMenuChoice(int choice) {
-        String messageAction = "";
         if(choice == 1) {
-            printBookList();
+            printItemList("book");
         }
         else if(choice == 2) {
             return;
         }
         else if(choice == 3) {
-            messageAction = "checkout";
-            actOnBook(messageAction);
+            actOnBook("checkout");
         }
         else if(choice == 4) {
-            messageAction = "return";
-            actOnBook(messageAction);
+            actOnBook("return");
+        }
+        else if(choice == 5) {
+            printItemList("movie");
         }
         else {
             System.out.println("Select a valid option!");
@@ -102,29 +116,41 @@ public class BibliotecaApp {
 
 
     public String printMessage(boolean isSuccessful, String messageAction) {
-        String message = "";
-        if (messageAction.equals("checkout")) {
-            if (isSuccessful) {
-                message = "Thank you! Enjoy the book";
-            }
-            else {
-                message = "That book is not available";
-            }
-        }
-        if (messageAction.equals("return")) {
-            if (isSuccessful) {
-                message = "Thank you for returning the book.";
-            }
-            else {
-                message = "That is not a valid book to return.";
-            }
-        }
+        String message = findMessage(isSuccessful, messageAction);
         System.out.println(message);
         return message;
     }
 
+    private String findMessage(boolean isSuccessful, String messageAction) {
+        if (messageAction.equals("checkout")) {
+            return checkoutMessages(isSuccessful);
+        }
+        else {
+            return returnMessages(isSuccessful);
+        }
 
-    public String getBookNameFromUser() {
+    }
+
+    private String checkoutMessages(boolean isSuccessful) {
+        if (isSuccessful) {
+            return "Thank you! Enjoy the book";
+        }
+        else {
+            return "That book is not available";
+        }
+    }
+
+    private String returnMessages(boolean isSuccessful) {
+        if (isSuccessful) {
+            return "Thank you for returning the book.";
+        }
+        else {
+            return "That is not a valid book to return.";
+        }
+    }
+
+
+    private String getBookNameFromUser() {
         Scanner reader = new Scanner(System.in);
         System.out.println("Enter the book's title: ");
         return reader.nextLine();

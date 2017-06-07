@@ -32,4 +32,10 @@ public class MovieTest {
     public void getMovieRating() throws Exception {
         assertEquals("8", movie.getRating());
     }
+
+    @Test
+    public void unratedMovie() throws Exception {
+        Movie unrated = new Movie("A Knights Tale", 2001, "Brian Helgeland");
+        assertEquals("Unrated", unrated.getRating());
+    }
 }
