@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
  */
 public class UserAccountTest {
 
-    UserAccount user = new UserAccount("123-1234", "lemmein");
+    UserAccount user = new UserAccount("123-1234", "lemmein", "Daniel Danielson", "dandan@dan.com", "07685356468");
 
     @Test
     public void verifyLibraryNumberInputMatchesLibraryNumberOfAccount() throws Exception {

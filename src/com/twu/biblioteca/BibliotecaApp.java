@@ -12,8 +12,8 @@ public class BibliotecaApp {
     Movie drStrange = new Movie("Dr Strange", 2016, "Scott Derrickson", "8");
     Movie[] movieArray = {aKnightsTale, drStrange};
     String[] menuOptions = {"1. List books", "2. Quit", "3. Checkout Book", "4. Return Book", "5. List Movies", "6. Checkout Movie"};
-    UserAccount tom = new UserAccount("123-1234", "lemmein");
-    UserAccount rob = new UserAccount("987-9876", "password");
+    UserAccount tom = new UserAccount("123-1234", "lemmein", "Daniel Danielson", "dandan@dan.com",  "07685356468");
+    UserAccount rob = new UserAccount("987-9876", "password", "Rob", "robrob@rob.com", "0834737298");
     UserAccount[] users = {tom, rob};
 
 
@@ -35,6 +35,10 @@ public class BibliotecaApp {
                 setCurrentUser(user);
             }
         }
+    }
+
+    String printCurrentUserInfo() {
+        return currentUser.getName() + ", " + currentUser.getEmail() + ", " + currentUser.getPhoneNumber();
     }
 
 
@@ -79,7 +83,15 @@ public class BibliotecaApp {
     }
 
     public String showMenu() {
-        return String.join("\n", menuOptions);
+        String menu = "";
+        for (String option : menuOptions) {
+            menu += option + "\n";
+        }
+        if (!(currentUser == null)) {
+            menu += "7. Show User Info";
+        }
+        System.out.println(menu);
+        return menu;
     }
 
     public void Menu() {
@@ -114,6 +126,9 @@ public class BibliotecaApp {
         }
         else if(choice == 6) {
             checkoutMovie(getBookNameFromUser());
+        }
+        else if((choice == 7) && !(currentUser == null)) {
+            printCurrentUserInfo();
         }
         else {
             System.out.println("Select a valid option!");

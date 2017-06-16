@@ -101,4 +101,10 @@ public class BibliotecaAppTest {
         app.userLogIn("123-1234", "lemmein");
         assertEquals(app.users[0], app.getCurrentUser());
     }
+
+    @Test
+    public void whenUserIsLoggedInCanPrintUserDetails() throws Exception {
+        app.userLogIn("123-1234", "lemmein");
+        assertEquals( "Daniel Danielson, dandan@dan.com, 07685356468", app.printCurrentUserInfo());
+    }
 }
