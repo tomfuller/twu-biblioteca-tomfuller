@@ -12,28 +12,28 @@ public class BibliotecaAppTest {
     BibliotecaApp app = new BibliotecaApp();
 
     @Test
-    public void greetingTest() throws Exception {
+    public void testThatBibliotecaPrintsAWelcomeMessage() throws Exception {
         assertEquals("Hello, welcome to Biblioteca!", app.greet());
     }
 
     @Test
-    public void bookListPrint() throws Exception {
+    public void checkThatBibliotecaPrintsABookList() throws Exception {
         assertEquals("Buttered Parsnips, Joe Lycett, 2016\nTest Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printItemList("book"));
     }
 
     @Test
-    public void menuShowsListBooks() throws Exception {
+    public void checkThatMenuOptionOneIsListBooks() throws Exception {
         assertEquals("1. List books", app.menuOptions[0]);
     }
 
     @Test
-    public void menuShowsQuit() throws Exception {
+    public void checkMenuOptionTwoIsQuit() throws Exception {
         assertEquals("2. Quit", app.menuOptions[1]);
 
     }
 
     @Test
-    public void menuShowsCheckoutBook() throws Exception {
+    public void checkMenyOptionThreeIsCheckoutBook() throws Exception {
         assertEquals("3. Checkout Book", app.menuOptions[2]);
     }
 
@@ -76,12 +76,12 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void movieListPrint() throws Exception {
+    public void checkThatAMovieListIsPrinted() throws Exception {
         assertEquals("A Knights Tale, 2001, Brian Helgeland, 7\nDr Strange, 2016, Scott Derrickson, 8\n", app.printItemList("movie"));
     }
 
     @Test
-    public void menuShowListMovies() throws Exception {
+    public void checkMenuOptionFiveIsListMovies() throws Exception {
         assertEquals("5. List Movies", app.menuOptions[4]);
     }
 }

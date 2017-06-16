@@ -28,18 +28,18 @@ public class BookTest {
     }
 
     @Test
-    public void bookNotCheckedOut() throws Exception {
+    public void bookShouldBeInitialisedNotCheckedOut() throws Exception {
         assertEquals(false, book.isCheckedOut);
     }
 
     @Test
-    public void bookCheckedOut() throws Exception {
+    public void bookShouldBeMarkedCheckedOutWhenBookHasBeenCheckedOut() throws Exception {
         book.checkOut();
         assertEquals(true, book.isCheckedOut);
     }
 
     @Test
-    public void returnBook() throws Exception {
+    public void bookShouldBeMarkedNotCheckedOutWhenBookHasBeenReturned() throws Exception {
         book.checkOut();
         book.returnBook();
         assertEquals(false, book.isCheckedOut);
