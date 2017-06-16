@@ -9,6 +9,7 @@ public class Movie {
     private int year;
     private String director;
     private String rating;
+    boolean isCheckedOut;
 
     public Movie(String movieName, int movieYear, String movieDirector, String movieRating) {
         name = movieName;
@@ -35,5 +36,9 @@ public class Movie {
 
     public String getRating() {
         return rating;
+    }
+
+    void checkout() {
+        isCheckedOut = true;
     }
 }

@@ -38,4 +38,10 @@ public class MovieTest {
         Movie unrated = new Movie("A Knights Tale", 2001, "Brian Helgeland");
         assertEquals("Unrated", unrated.getRating());
     }
+
+    @Test
+    public void checkoutMovieShouldChangeMovieStateToCheckedout() throws Exception {
+        movie.checkout();
+        assertEquals(true, movie.isCheckedOut);
+    }
 }

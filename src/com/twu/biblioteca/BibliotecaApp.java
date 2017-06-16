@@ -4,14 +4,38 @@ import java.util.*;
 public class BibliotecaApp {
 
 
-    private Book butteredParsnips = new Book("Buttered Parsnips", "Joe Lycett", 2016);
-    private Book testDrivenDevelopment = new Book("Test Driven Development", "Kent Beck", 2003);
-    private Book headFirstJava = new Book("Head First Java", "Kathy Sierra", 2005);
+    Book butteredParsnips = new Book("Buttered Parsnips", "Joe Lycett", 2016);
+    Book testDrivenDevelopment = new Book("Test Driven Development", "Kent Beck", 2003);
+    Book headFirstJava = new Book("Head First Java", "Kathy Sierra", 2005);
     Book[] bookArray = {butteredParsnips, testDrivenDevelopment, headFirstJava};
-    private Movie aKnightsTale = new Movie("A Knights Tale", 2001, "Brian Helgeland", "7");
-    private Movie drStrange = new Movie("Dr Strange", 2016, "Scott Derrickson", "8");
+    Movie aKnightsTale = new Movie("A Knights Tale", 2001, "Brian Helgeland", "7");
+    Movie drStrange = new Movie("Dr Strange", 2016, "Scott Derrickson", "8");
     Movie[] movieArray = {aKnightsTale, drStrange};
-    String[] menuOptions = {"1. List books", "2. Quit", "3. Checkout Book", "4. Return Book", "5. List Movies"};
+    String[] menuOptions = {"1. List books", "2. Quit", "3. Checkout Book", "4. Return Book", "5. List Movies", "6. Checkout Movie"};
+    UserAccount tom = new UserAccount("123-1234", "lemmein");
+    UserAccount rob = new UserAccount("987-9876", "password");
+    UserAccount[] users = {tom, rob};
+
+
+
+
+    private UserAccount currentUser;
+
+    public UserAccount getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(UserAccount currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    void userLogIn(String libraryNumber, String password) {
+        for (UserAccount user: users) {
+            if (user.verifyLibraryNumber(libraryNumber) && user.verifyPassword(password)) {
+                setCurrentUser(user);
+            }
+        }
+    }
 
 
     public static void main(String[] args) {
@@ -37,7 +61,9 @@ public class BibliotecaApp {
     String formatMovieString() {
         String movieList = "";
         for (Movie movie: movieArray){
+            if (!movie.isCheckedOut) {
                 movieList += movie.getName() + ", " + movie.getYear() + ", " + movie.getDirector() + ", " + movie.getRating() + "\n";
+            }
         }
         return movieList;
     }
@@ -53,8 +79,7 @@ public class BibliotecaApp {
     }
 
     public String showMenu() {
-        String menu = String.join("\n", menuOptions);
-        return menu;
+        return String.join("\n", menuOptions);
     }
 
     public void Menu() {
@@ -77,13 +102,18 @@ public class BibliotecaApp {
             return;
         }
         else if(choice == 3) {
-            actOnBook("checkout");
+            if (!(getCurrentUser() == null)) {
+                actOnBook("checkout");
+            }
         }
         else if(choice == 4) {
             actOnBook("return");
         }
         else if(choice == 5) {
             printItemList("movie");
+        }
+        else if(choice == 6) {
+            checkoutMovie(getBookNameFromUser());
         }
         else {
             System.out.println("Select a valid option!");
@@ -96,7 +126,13 @@ public class BibliotecaApp {
         changeBookStatus(bookName, action);
     }
 
-
+    void checkoutMovie(String movieTitle) {
+        for (Movie movie: movieArray) {
+            if (movieTitle.equals(movie.getName())) {
+                movie.checkout();
+            }
+        }
+    }
 
     public void changeBookStatus(String bookName, String action) {
         boolean isBookInList = false;
@@ -152,7 +188,7 @@ public class BibliotecaApp {
 
     private String getBookNameFromUser() {
         Scanner reader = new Scanner(System.in);
-        System.out.println("Enter the book's title: ");
+        System.out.println("Enter the item's title: ");
         return reader.nextLine();
     }
 }

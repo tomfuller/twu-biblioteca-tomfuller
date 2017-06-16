@@ -84,4 +84,21 @@ public class BibliotecaAppTest {
     public void checkMenuOptionFiveIsListMovies() throws Exception {
         assertEquals("5. List Movies", app.menuOptions[4]);
     }
+
+    @Test
+    public void checkMenuOptionSixIsCheckoutMovie() throws Exception {
+        assertEquals("6. Checkout Movie", app.menuOptions[5]);
+    }
+
+    @Test
+    public void checkedOutMovieIsNoLongerInList() throws Exception {
+        app.checkoutMovie("A Knights Tale");
+        assertEquals("Dr Strange, 2016, Scott Derrickson, 8\n", app.printItemList("movie"));
+    }
+
+    @Test
+    public void currentUserShouldBeTheUserWhoLoggedInMostRecently() throws Exception {
+        app.userLogIn("123-1234", "lemmein");
+        assertEquals(app.users[0], app.getCurrentUser());
+    }
 }
