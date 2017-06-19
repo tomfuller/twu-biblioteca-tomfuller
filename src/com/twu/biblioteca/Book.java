@@ -3,12 +3,11 @@ package com.twu.biblioteca;
 /**
  * Created by tomfuller on 29/05/2017.
  */
-public class Book {
+public class Book extends Item {
 
     private String title;
     private String author;
     private int yearPublished;
-    public boolean isCheckedOut = false;
 
     public Book(String bookTitle, String bookAuthor, int bookYearPublished) {
         title = bookTitle;
@@ -28,11 +27,13 @@ public class Book {
         return yearPublished;
     }
 
-    public void checkOut() {
-        isCheckedOut = true;
-    }
-
     public void returnBook() {
         isCheckedOut = false;
     }
+
+    public String formatString() {
+       return getTitle() + ", " + getAuthor() + ", " + getYearPublished() + "\n";
+    }
+
+
 }

@@ -41,4 +41,8 @@ public class UserAccount {
         return phoneNumber;
     }
 
+    public String printUserInfo() {
+        return getName() + ", " + getEmail() + ", " + getPhoneNumber();
+    }
+
 }

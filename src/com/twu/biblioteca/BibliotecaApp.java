@@ -4,20 +4,11 @@ import java.util.*;
 public class BibliotecaApp {
 
 
-    Book butteredParsnips = new Book("Buttered Parsnips", "Joe Lycett", 2016);
-    Book testDrivenDevelopment = new Book("Test Driven Development", "Kent Beck", 2003);
-    Book headFirstJava = new Book("Head First Java", "Kathy Sierra", 2005);
-    Book[] bookArray = {butteredParsnips, testDrivenDevelopment, headFirstJava};
-    Movie aKnightsTale = new Movie("A Knights Tale", 2001, "Brian Helgeland", "7");
-    Movie drStrange = new Movie("Dr Strange", 2016, "Scott Derrickson", "8");
-    Movie[] movieArray = {aKnightsTale, drStrange};
+    Library library = new Library();
     String[] menuOptions = {"1. List books", "2. Quit", "3. Checkout Book", "4. Return Book", "5. List Movies", "6. Checkout Movie"};
     UserAccount tom = new UserAccount("123-1234", "lemmein", "Daniel Danielson", "dandan@dan.com",  "07685356468");
     UserAccount rob = new UserAccount("987-9876", "password", "Rob", "robrob@rob.com", "0834737298");
     UserAccount[] users = {tom, rob};
-
-
-
 
     private UserAccount currentUser;
 
@@ -37,8 +28,8 @@ public class BibliotecaApp {
         }
     }
 
-    String printCurrentUserInfo() {
-        return currentUser.getName() + ", " + currentUser.getEmail() + ", " + currentUser.getPhoneNumber();
+    private String printCurrentUserInfo() {
+        return currentUser.printUserInfo();
     }
 
 
@@ -50,36 +41,19 @@ public class BibliotecaApp {
 
     public String greet() {
         String welcomeMessage = "Hello, welcome to Biblioteca!";
-        System.out.println(welcomeMessage);
+        output(welcomeMessage);
         return welcomeMessage;
     }
 
-    String printItemList(String item) {
+    String printItemList(Item[] items) {
         String itemList = "";
-        if(item.equals("movie")) { itemList = formatMovieString(); }
-        else if(item.equals("book")) {itemList = formatBookString(); }
-        System.out.println(itemList);
+        for (Item item: items) {
+            if (!item.isCheckedOut) {
+                itemList += item.formatString();
+            }
+        }
+        output(itemList);
         return itemList;
-    }
-
-    String formatMovieString() {
-        String movieList = "";
-        for (Movie movie: movieArray){
-            if (!movie.isCheckedOut) {
-                movieList += movie.getName() + ", " + movie.getYear() + ", " + movie.getDirector() + ", " + movie.getRating() + "\n";
-            }
-        }
-        return movieList;
-    }
-
-    private String formatBookString() {
-        String bookList = "";
-        for (Book book: bookArray){
-            if (!book.isCheckedOut) {
-                bookList += book.getTitle() + ", " + book.getAuthor() + ", " + book.getYearPublished() + "\n";
-            }
-        }
-        return bookList;
     }
 
     public String showMenu() {
@@ -90,7 +64,7 @@ public class BibliotecaApp {
         if (!(currentUser == null)) {
             menu += "7. Show User Info";
         }
-        System.out.println(menu);
+        output(menu);
         return menu;
     }
 
@@ -102,108 +76,96 @@ public class BibliotecaApp {
 
     public int getUserMenuChoice() {
         Scanner reader = new Scanner(System.in);
-        System.out.println("Enter a number: ");
+        output("Enter a number: ");
         return reader.nextInt();
     }
 
-    public void showMenuChoice(int choice) {
-        if(choice == 1) {
-            printItemList("book");
-        }
-        else if(choice == 2) {
-            return;
-        }
-        else if(choice == 3) {
-            if (!(getCurrentUser() == null)) {
-                actOnBook("checkout");
-            }
-        }
-        else if(choice == 4) {
-            actOnBook("return");
-        }
-        else if(choice == 5) {
-            printItemList("movie");
-        }
-        else if(choice == 6) {
-            checkoutMovie(getBookNameFromUser());
-        }
-        else if((choice == 7) && !(currentUser == null)) {
-            printCurrentUserInfo();
-        }
-        else {
-            System.out.println("Select a valid option!");
+    private void showMenuChoice(int choice) {
+        switch(choice) {
+            case 1:
+                printItemList(library.bookArray);
+                break;
+            case 2:
+                return;
+            case 3:
+                if (!(getCurrentUser() == null)) {
+                    checkoutItem(getItemNameFromUser(), library.bookArray);
+                }
+                break;
+            case 4:
+                returnBook(getItemNameFromUser());
+                break;
+            case 5:
+                printItemList(library.movieArray);
+                break;
+            case 6:
+                checkoutItem(getItemNameFromUser(), library.movieArray);
+                break;
+            case 7:
+                if (!(currentUser == null)) {
+                    printCurrentUserInfo();
+                }
+                break;
+            default:
+                output("Select a valid option!");
         }
         Menu();
     }
 
-    public void actOnBook(String action) {
-        String bookName = getBookNameFromUser();
-        changeBookStatus(bookName, action);
-    }
-
-    void checkoutMovie(String movieTitle) {
-        for (Movie movie: movieArray) {
-            if (movieTitle.equals(movie.getName())) {
-                movie.checkout();
-            }
-        }
-    }
-
-    public void changeBookStatus(String bookName, String action) {
+    public void returnBook (String bookName) {
         boolean isBookInList = false;
-        for (Book book: bookArray) {
+        for (Book book: library.bookArray) {
             if (bookName.equals(book.getTitle())  ) {
                 isBookInList = true;
-                if (action.equals("checkout")) {
-                    book.checkOut();
-                }
-                else if (action.equals("return")) {
-                    book.returnBook();
-                }
+                book.returnBook();
             }
         }
-        printMessage(isBookInList, action);
+        returnMessages(isBookInList);
     }
 
+    void checkoutItem(String itemName, Item[] items) {
+        boolean isBookInList = false;
+        for (Item item : items) {
+            if (itemName.equals(item.getTitle())) {
+                isBookInList = true;
+                item.checkOut();
+            }
+        }
+        checkoutMessages(isBookInList);
+    }
 
-    public String printMessage(boolean isSuccessful, String messageAction) {
-        String message = findMessage(isSuccessful, messageAction);
-        System.out.println(message);
+    public String checkoutMessages(boolean isSuccessful) {
+        String message = "";
+        if (isSuccessful) {
+            message =  "Thank you! Enjoy the item";
+        }
+        else {
+            message = "That item is not available";
+        }
+        output(message);
         return message;
     }
 
-    private String findMessage(boolean isSuccessful, String messageAction) {
-        if (messageAction.equals("checkout")) {
-            return checkoutMessages(isSuccessful);
-        }
-        else {
-            return returnMessages(isSuccessful);
-        }
-
-    }
-
-    private String checkoutMessages(boolean isSuccessful) {
+    public String returnMessages(boolean isSuccessful) {
+        String message = "";
         if (isSuccessful) {
-            return "Thank you! Enjoy the book";
+            message = "Thank you for returning the book.";
         }
         else {
-            return "That book is not available";
+            message = "That is not a valid book to return.";
         }
-    }
-
-    private String returnMessages(boolean isSuccessful) {
-        if (isSuccessful) {
-            return "Thank you for returning the book.";
-        }
-        else {
-            return "That is not a valid book to return.";
-        }
+        output(message);
+        return message;
     }
 
 
-    private String getBookNameFromUser() {
+    private String getItemNameFromUser() {
         Scanner reader = new Scanner(System.in);
         System.out.println("Enter the item's title: ");
         return reader.nextLine();
+    }
+
+    private void output(String content) {
+        System.out.println(content);
     }
 }

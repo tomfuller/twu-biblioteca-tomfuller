@@ -3,16 +3,15 @@ package com.twu.biblioteca;
 /**
  * Created by tomfuller on 01/06/2017.
  */
-public class Movie {
+public class Movie extends Item {
 
-    private String name;
+    private String title;
     private int year;
     private String director;
     private String rating;
-    boolean isCheckedOut;
 
     public Movie(String movieName, int movieYear, String movieDirector, String movieRating) {
-        name = movieName;
+        title = movieName;
         year = movieYear;
         director = movieDirector;
         rating = movieRating;
@@ -22,8 +21,8 @@ public class Movie {
         this(movieName, movieYear, movieDirector, "Unrated");
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public int getYear() {
@@ -38,7 +37,10 @@ public class Movie {
         return rating;
     }
 
-    void checkout() {
-        isCheckedOut = true;
-    }
+
+    public String formatString() {
+            return getTitle() + ", " + getYear() + ", " + getDirector() + ", " + getRating() + "\n";
+        }
+
+
 }

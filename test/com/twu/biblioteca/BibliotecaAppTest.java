@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 public class BibliotecaAppTest {
 
     BibliotecaApp app = new BibliotecaApp();
+    Library library = new Library();
 
     @Test
     public void testThatBibliotecaPrintsAWelcomeMessage() throws Exception {
@@ -18,7 +19,7 @@ public class BibliotecaAppTest {
 
     @Test
     public void checkThatBibliotecaPrintsABookList() throws Exception {
-        assertEquals("Buttered Parsnips, Joe Lycett, 2016\nTest Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printItemList("book"));
+        assertEquals("Buttered Parsnips, Joe Lycett, 2016\nTest Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printItemList(app.library.bookArray));
     }
 
     @Test
@@ -39,8 +40,8 @@ public class BibliotecaAppTest {
 
     @Test
     public void checkedOutBookNoLongerInBookList() throws Exception {
-        app.changeBookStatus("Buttered Parsnips", "checkout");
-        assertEquals("Test Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printItemList("book"));
+        app.checkoutItem("Buttered Parsnips", app.library.bookArray);
+        assertEquals("Test Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printItemList(app.library.bookArray));
     }
 
     @Test
@@ -50,34 +51,34 @@ public class BibliotecaAppTest {
 
     @Test
     public void returnedBookAppearsInList() throws Exception {
-        app.changeBookStatus("Buttered Parsnips", "checkout");
-        app.changeBookStatus("Buttered Parsnips", "return");
-        assertEquals("Buttered Parsnips, Joe Lycett, 2016\nTest Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printItemList("book"));
+        app.checkoutItem("Buttered Parsnips", app.library.bookArray);
+        app.returnBook("Buttered Parsnips");
+        assertEquals("Buttered Parsnips, Joe Lycett, 2016\nTest Driven Development, Kent Beck, 2003\nHead First Java, Kathy Sierra, 2005\n", app.printItemList(app.library.bookArray));
     }
 
     @Test
     public void successfulBookCheckoutMessage() throws Exception {
-        assertEquals("Thank you! Enjoy the book", app.printMessage(true, "checkout"));
+        assertEquals("Thank you! Enjoy the item", app.checkoutMessages(true));
     }
 
     @Test
     public void unsuccessfulBookCheckoutMessage() throws Exception {
-        assertEquals("That book is not available", app.printMessage(false, "checkout"));
+        assertEquals("That item is not available", app.checkoutMessages(false));
     }
 
     @Test
     public void successfulBookReturnMessage() throws Exception {
-        assertEquals("Thank you for returning the book.", app.printMessage(true, "return"));
+        assertEquals("Thank you for returning the book.", app.returnMessages(true));
     }
 
     @Test
     public void unsuccessfulBookReturnMessage() throws Exception {
-        assertEquals("That is not a valid book to return.", app.printMessage(false, "return"));
+        assertEquals("That is not a valid book to return.", app.returnMessages(false));
     }
 
     @Test
     public void checkThatAMovieListIsPrinted() throws Exception {
-        assertEquals("A Knights Tale, 2001, Brian Helgeland, 7\nDr Strange, 2016, Scott Derrickson, 8\n", app.printItemList("movie"));
+        assertEquals("A Knights Tale, 2001, Brian Helgeland, 7\nDr Strange, 2016, Scott Derrickson, 8\n", app.printItemList(app.library.movieArray));
     }
 
     @Test
@@ -92,8 +93,8 @@ public class BibliotecaAppTest {
 
     @Test
     public void checkedOutMovieIsNoLongerInList() throws Exception {
-        app.checkoutMovie("A Knights Tale");
-        assertEquals("Dr Strange, 2016, Scott Derrickson, 8\n", app.printItemList("movie"));
+        app.checkoutItem("A Knights Tale", app.library.movieArray);
+        assertEquals("Dr Strange, 2016, Scott Derrickson, 8\n", app.printItemList(app.library.movieArray));
     }
 
     @Test
@@ -105,6 +106,6 @@ public class BibliotecaAppTest {
     @Test
     public void whenUserIsLoggedInCanPrintUserDetails() throws Exception {
         app.userLogIn("123-1234", "lemmein");
-        assertEquals( "Daniel Danielson, dandan@dan.com, 07685356468", app.printCurrentUserInfo());
+        assertEquals( app.users[0], app.getCurrentUser());
     }
 }

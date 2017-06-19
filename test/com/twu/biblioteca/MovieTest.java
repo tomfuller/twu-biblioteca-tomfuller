@@ -13,7 +13,7 @@ public class MovieTest {
 
     @Test
     public void getMovieName() throws Exception {
-        assertEquals("A Knights Tale", movie.getName());
+        assertEquals("A Knights Tale", movie.getTitle());
     }
 
     @Test
@@ -41,7 +41,7 @@ public class MovieTest {
 
     @Test
     public void checkoutMovieShouldChangeMovieStateToCheckedout() throws Exception {
-        movie.checkout();
+        movie.checkOut();
         assertEquals(true, movie.isCheckedOut);
     }
 }
